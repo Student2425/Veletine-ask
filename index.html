@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Love Diary ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:ital,wght@0,600;1,600&family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --pastel-pink: #ffe6ea;
+            --rose-red: #d90429;
+            --lavender: #e6e6fa;
+            --warm-cream: #fffdd0;
+            --text-dark: #2b2b2b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="%23d90429"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'), auto;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--pastel-pink), var(--warm-cream));
+            color: var(--text-dark);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Floating Hearts Background */
+        .heart-bg {
+            position: fixed;
+            top: -10vh;
+            transform: translateY(0);
+            animation: fall 10s linear infinite;
+            color: rgba(217, 4, 41, 0.2);
+            font-size: 24px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh); }
+        }
+
+        /* Sections */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+            transition: opacity 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        h1, h2 { font-family: 'Playfair Display', serif; }
+        .script-text { font-family: 'Dancing Script', cursive; color: var(--rose-red); }
+
+        /* Home Page */
+        #home h1 { font-size: 4rem; margin-bottom: 10px; }
+        .typing-text {
+            font-size: 1.5rem;
+            border-right: 2px solid var(--rose-red);
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typing 3s steps(30, end), blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--rose-red); } }
+
+        .btn {
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: var(--rose-red);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(217, 4, 41, 0.3);
+        }
+        .btn:hover { background: #b00321; transform: translateY(-3px); }
+
+        /* Poetry Section */
+        #poetry { background: rgba(230, 230, 250, 0.4); } 
+        .poem-card {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            max-width: 600px;
+            backdrop-filter: blur(10px);
+        }
+        .poem-card p {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            line-height: 1.6;
+            font-style: italic;
+        }
+        .poem-card .author {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: var(--rose-red);
+        }
+
+        /* Proposal Section */
+        #proposal h2 { font-size: 3.5rem; margin-bottom: 40px; }
+        .buttons-container { display: flex; gap: 20px; position: relative; justify-content: center; width: 100%; height: 60px; }
+        .btn-yes { background: var(--rose-red); padding: 15px 50px; font-size: 1.5rem; border: none; border-radius: 30px; color: white; transition: transform 0.2s; cursor: pointer; z-index: 10; }
+        .btn-yes:hover { transform: scale(1.1); }
+        .btn-no { background: #666; padding: 15px 50px; font-size: 1.5rem; border: none; border-radius: 30px; color: white; position: absolute; cursor: pointer; transition: left 0.2s ease, top 0.2s ease; z-index: 10; left: 60%; }
+
+        /* Final Poetry Section */
+        #final-page {
+            display: none; /* Hidden by default */
+            background: linear-gradient(135deg, #d90429, #ff758c);
+            color: white;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 100;
+        }
+        #final-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            line-height: 1.5;
+            max-width: 800px;
+            text-align: center;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+        }
+        .word {
+            opacity: 0;
+            display: inline-block;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            margin-right: 10px;
+        }
+        .word.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            #home h1 { font-size: 2.5rem; }
+            .typing-text { font-size: 1.2rem; }
+            .poem-card p { font-size: 1.4rem; }
+            #final-text { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <section id="home">
+        <h1>Happy Valentine, <span class="script-text">My Love ❤️</span></h1>
+        <div class="typing-text">You are my favorite notification.</div>
+        <a href="#poetry" class="btn">Start Our Journey</a>
+    </section>
+
+    <section id="poetry">
+        <h2 style="margin-bottom: 30px;" class="script-text">A Thought For You</h2>
+        <div class="poem-card">
+            <p>"Nahi fursat yaqeen mano humein kuch aur karne ki,<br>
+            Teri baatein, teri yaadein, bohot masroof rakhti hain."</p>
+            <div class="author">— Jaun Elia</div>
+        </div>
+        <a href="#proposal" class="btn" style="margin-top: 40px;">Continue</a>
+    </section>
+
+    <section id="proposal">
+        <h2>Will You Be Mine Forever? 💍</h2>
+        <div class="buttons-container">
+            <button class="btn-yes" onclick="acceptProposal()">YES</button>
+            <button class="btn-no" id="noBtn">NO</button>
+        </div>
+    </section>
+
+    <section id="final-page">
+        <div id="final-text"></div>
+    </section>
+
+    <script>
+        // Floating Hearts Background Generator
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-bg');
+            heart.innerText = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 7 + 's';
+            heart.style.opacity = Math.random() * 0.5 + 0.2;
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 10000);
+        }
+        setInterval(createHeart, 300);
+
+        // Playful Runaway 'No' Button
+        const noBtn = document.getElementById('noBtn');
+
+        function moveButton() {
+            const x = Math.max(0, Math.random() * (window.innerWidth - noBtn.offsetWidth - 20));
+            const y = Math.max(0, Math.random() * (window.innerHeight - noBtn.offsetHeight - 20));
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+        }
+
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); 
+            moveButton();
+        });
+
+        // YES Button Logic (Show Final Page + Word by Word Poetry)
+        function acceptProposal() {
+            // Hide everything else
+            document.body.style.overflow = 'hidden';
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('poetry').style.display = 'none';
+            document.getElementById('proposal').style.display = 'none';
+            
+            // Show Final Page
+            const finalPage = document.getElementById('final-page');
+            finalPage.style.display = 'flex';
+            finalPage.style.opacity = 1;
+
+            // Shower extra hearts (Confetti effect)
+            for(let i=0; i<50; i++){
+                setTimeout(createHeart, i * 50);
+            }
+
+            // Word by Word Poetry Logic
+            const poemText = "Tum hi mera aaj ho, aur tum hi mera kal... Meri har saans, har dhadkan tumhara hi naam leti hai. I Love You Forever! ❤️";
+            const wordsArray = poemText.split(" ");
+            const textContainer = document.getElementById('final-text');
+            
+            wordsArray.forEach((word, index) => {
+                let span = document.createElement('span');
+                span.classList.add('word');
+                // Break line logically
+                if(word === "kal...") {
+                    span.innerHTML = word + "<br><br>";
+                } else if(word === "hai.") {
+                    span.innerHTML = word + "<br><br>";
+                } else {
+                    span.innerHTML = word;
+                }
+                
+                textContainer.appendChild(span);
+
+                // Add delay for each word
+                setTimeout(() => {
+                    span.classList.add('show');
+                }, index * 400); // 400ms delay per word
+            });
+        }
+    </script>
+</body>
+</html>
